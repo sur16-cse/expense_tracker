@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Personal Expenses',
-      home: MyHomePage(),
+      home: const MyHomePage(),
       theme: ThemeData(
         primarySwatch: Colors.purple,
         fontFamily: 'OpenSans',
@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('show Chart'),
+                  const Text('show Chart'),
                   Switch(
                     value: _showChart,
                     onChanged: (val) => setState(() {
