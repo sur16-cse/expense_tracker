@@ -42,18 +42,19 @@ class TransactionItem extends StatelessWidget {
         ),
         trailing: mediaQuery.size.width > 460
             ? TextButton.icon(
-          style: TextButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error),
-          icon: const Icon(Icons.delete),
-          label: const Text('Delete'),
-          onPressed: () => deleteTx(transaction.id,
-          ),
-        )
+                style: TextButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.error),
+                icon: const Icon(Icons.delete),
+                label: const Text('Delete'),
+                onPressed: () => deleteTx(
+                  transaction.id,
+                ),
+              )
             : IconButton(
-          icon: const Icon(Icons.delete),
-          color: Theme.of(context).colorScheme.error,
-          onPressed: () => deleteTx(transaction.id),
-        ),
+                icon: const Icon(Icons.delete),
+                color: Theme.of(context).colorScheme.error,
+                onPressed: () => deleteTx(transaction.id),
+              ),
       ),
     );
   }
