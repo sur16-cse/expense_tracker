@@ -1,6 +1,5 @@
 import 'package:expense_tracker/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
 
@@ -36,7 +35,11 @@ class TransactionList extends StatelessWidget {
           })
         : ListView.builder(
             itemBuilder: (ctx, index) {
-              return TransactionItem(transaction: transactions[index], mediaQuery: mediaQuery, deleteTx: deleteTx,);
+              return TransactionItem(
+                transaction: transactions[index],
+                mediaQuery: mediaQuery,
+                deleteTx: deleteTx,
+              );
             },
             itemCount: transactions.length,
           );

@@ -7,6 +7,7 @@ class Chart extends StatelessWidget {
   final List<Transaction> recentTransaction;
   const Chart(this.recentTransaction, {super.key});
 
+
   List<Map<String, Object>> get groupedTransactionValues {
     return List.generate(
       7,

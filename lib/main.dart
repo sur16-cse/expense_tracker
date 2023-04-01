@@ -1,5 +1,5 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './widgets/chart.dart';
 import './widgets/new_transaction.dart';
@@ -9,7 +9,12 @@ import 'models/transaction.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ],
   );
   runApp(const MyApp());
 }
@@ -25,12 +30,35 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
         fontFamily: 'OpenSans',
-        appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(
-            fontFamily: 'QuickSand',
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+        textTheme: ThemeData.light().textTheme.copyWith(
+              titleMedium: const TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              labelLarge: const TextStyle(color: Colors.white),
+            ),
+        appBarTheme: AppBarTheme(
+          toolbarTextStyle: ThemeData.light()
+              .textTheme
+              .copyWith(
+                titleMedium: const TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+              .bodyMedium,
+          titleTextStyle: ThemeData.light()
+              .textTheme
+              .copyWith(
+                titleMedium: const TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+              .titleLarge,
         ),
       ),
     );
@@ -91,13 +119,23 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Widget _buildLandscapeContent(){
+  //
+  // }
+  //
+  // Widget _buildPortraitContent(){
+  //
+  // }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final landScape = mediaQuery.orientation == Orientation.landscape;
+    final curScaleFactor = mediaQuery.textScaleFactor;
     final appBar = AppBar(
       // backgroundColor: Colors.red,
-      title: const Text('Personal Expenses'),
+      title: const Text('Personal Expenses',
+          style: TextStyle(color: Colors.white)),
       actions: <Widget>[
         IconButton(
             onPressed: () => _startAddNewTransaction(context),
@@ -111,6 +149,17 @@ class _MyHomePageState extends State<MyHomePage> {
           0.7,
       child: TransactionList(_userTransaction, _deleteTransaction),
     );
+
+    Container chartAboveList(double height) {
+      return Container(
+        height: (MediaQuery.of(context).size.height -
+                appBar.preferredSize.height -
+                MediaQuery.of(context).padding.top) *
+            height,
+        child: Chart(_recentTransactions),
+      );
+    }
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -130,25 +179,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ],
               ),
-            if (!landScape)
-              Container(
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.3,
-                child: Chart(_recentTransactions),
-              ),
+            if (!landScape) chartAboveList(0.3),
             if (!landScape) txListWidget,
-            if (landScape)
-              _showChart
-                  ? Container(
-                      height: (mediaQuery.size.height -
-                              appBar.preferredSize.height -
-                              mediaQuery.padding.top) *
-                          0.7,
-                      child: Chart(_recentTransactions),
-                    )
-                  : txListWidget
+            if (landScape) _showChart ? chartAboveList(0.7) : txListWidget
           ],
         ),
       ),
